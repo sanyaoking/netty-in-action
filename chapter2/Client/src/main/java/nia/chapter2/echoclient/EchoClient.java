@@ -44,9 +44,10 @@ public class EchoClient {
             f.channel().closeFuture().sync();
         } finally {
             group.shutdownGracefully().sync();
+            System.out.println("finally");
         }
     }
-
+    
     public static void main(String[] args)
             throws Exception {
         if (args.length != 2) {
