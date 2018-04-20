@@ -101,7 +101,7 @@ public class NoBlockingClientExample {
         
     }  
 	public static void  main(String arg[]) {
-		NoBlockingIoExample nbs = new NoBlockingIoExample();
+		final NoBlockingIoExample nbs = new NoBlockingIoExample();
 		Thread th = new Thread(new Runnable() {
 			
 			@Override

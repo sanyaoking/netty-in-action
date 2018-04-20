@@ -1,5 +1,6 @@
 package io.netty.channel;
 
+import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.util.concurrent.EventExecutor;
 
 /**

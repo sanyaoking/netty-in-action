@@ -91,7 +91,8 @@ public class NoBlockingIoExample {
 	                        System.out.println("accepted from " + client);
 	                        // 配置client的通道为非阻塞模式
 	                        client.configureBlocking(false);
-	                        //注册进selector，当可读或可写时将得到通知，select返回  
+	                        //注册进selector，当可读或可写时将得到通知，select返回  ，这个注册时通知seletor当前channel对什么状态感兴趣，对于write一定要注意，如果注册write后，那么只要
+	                        //系统可写，那么会重复触发write逻辑中的操作，所以在write完毕之后，及时修改channel感兴趣的状态。
 	                        client.register(selector, SelectionKey.OP_READ);
 	                    }else if(key.isReadable()) {
 	                    	 //有channel可读,取出可读的channel  

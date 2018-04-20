@@ -21,19 +21,24 @@ public class PlainNioServer {
         ServerSocketChannel serverChannel = ServerSocketChannel.open();
         serverChannel.configureBlocking(false);
         ServerSocket ss = serverChannel.socket();
+        //将服务器绑定到指定端口
         InetSocketAddress address = new InetSocketAddress(port);
         ss.bind(address);
+        //打开selector来处理channel
         Selector selector = Selector.open();
+        //将ServerSocket注册到Selector已接受连接
         serverChannel.register(selector, SelectionKey.OP_ACCEPT);
         final ByteBuffer msg = ByteBuffer.wrap("Hi!\r\n".getBytes());
         for (;;){
             try {
+            	//等待需要处理的新事件；阻塞将一直持续到下一个传入事件
                 selector.select();
             } catch (IOException ex) {
                 ex.printStackTrace();
                 //handle exception
                 break;
             }
+            //获取所有接收事件的SelectionKey实例
             Set<SelectionKey> readyKeys = selector.selectedKeys();
             Iterator<SelectionKey> iterator = readyKeys.iterator();
             while (iterator.hasNext()) {
@@ -45,6 +50,7 @@ public class PlainNioServer {
                                 (ServerSocketChannel) key.channel();
                         SocketChannel client = server.accept();
                         client.configureBlocking(false);
+                        //接受客户端，并将它注册到选择器
                         client.register(selector, SelectionKey.OP_WRITE |
                                 SelectionKey.OP_READ, msg.duplicate());
                         System.out.println(
